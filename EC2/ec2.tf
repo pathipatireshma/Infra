@@ -5,6 +5,7 @@ resource "aws_instance" "this" {
     cpu_core_count              =   var.cpu_core_count
     cpu_threads_per_core        =   var.cpu_threads_per_core
     hibernation                 =    var.hibernation
+    host_id                     =    var.host_id 
     instance_type               =    var.instance_type
     key_name                    =    var.key_name
     disable_api_termination     =    var.disable_api_termination
@@ -13,6 +14,8 @@ resource "aws_instance" "this" {
     user_data_replace_on_change =    var.user_data_replace_on_change
     subnet_id                   =    var.subnet_id
     vpc_security_group_ids      =    var.vpc_security_group_ids
+    monitoring                  =    var.monitoring
+    get_password_data           =    var.get_password_data
     dynamic "launch_template" {
     for_each = var.launch_template != null ? [var.launch_template] : []
     content {

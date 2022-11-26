@@ -62,6 +62,13 @@ variable "vpc_security_group_ids" {
     type        = list(string)
     default     = null
 }
-  
+variable "monitoring" {
+    type = bool
+}  
+variable "get_password_data" {
+    type = bool
+}
+variable "host_id" {
+    type = string
+}
 
-  
