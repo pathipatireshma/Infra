@@ -16,3 +16,12 @@ variable "default_ttl" {
     default = "null"
   
 }
+variable "comment" {
+    type = string
+    default = "null"
+  
+}
+variable "parameters_in_cache_key and_forwarded_to_origin" {
+    type = map(string)
+  
+}
