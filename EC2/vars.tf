@@ -72,3 +72,19 @@ variable "host_id" {
     type = string
 }
 
+variable "metadata_options" {
+    type = map(string)
+  
+}
+variable "network_interface" {
+    type = list(map(string))
+  
+}
+variable "name" {
+    type = string
+  
+}
+variable "tags" {
+    type = map(string)
+  
+}

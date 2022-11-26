@@ -16,6 +16,7 @@ resource "aws_instance" "this" {
     vpc_security_group_ids      =    var.vpc_security_group_ids
     monitoring                  =    var.monitoring
     get_password_data           =    var.get_password_data
+    tags        = merge({ "Name" = var.name }, var.tags)
     dynamic "launch_template" {
     for_each = var.launch_template != null ? [var.launch_template] : []
     content {
@@ -36,6 +37,23 @@ resource "aws_instance" "this" {
       volume_size           = lookup(ebs_block_device.value, "volume_size", null)
       volume_type           = lookup(ebs_block_device.value, "volume_type", null)
       throughput            = lookup(ebs_block_device.value, "throughput", null)
+    }
+  }
+  dynamic "metadata_options" {
+    for_each = var.metadata_options != null ? [var.metadata_options] : []
+    content {
+      http_endpoint               = lookup(metadata_options.value, "http_endpoint", "enabled")
+      http_tokens                 = lookup(metadata_options.value, "http_tokens", "optional")
+      http_put_response_hop_limit = lookup(metadata_options.value, "http_put_response_hop_limit", "1")
+      instance_metadata_tags      = lookup(metadata_options.value, "instance_metadata_tags", null)
+    }
+  }
+  dynamic "network_interface" {
+    for_each = var.network_interface
+    content {
+      device_index          = network_interface.value.device_index
+      network_interface_id  = lookup(network_interface.value, "network_interface_id", null)
+      delete_on_termination = lookup(network_interface.value, "delete_on_termination", false)
     }
   }
     
