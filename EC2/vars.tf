@@ -1,16 +1,16 @@
 variable "availability_zone" {
     type = string
-  
+      
 }
 
 variable "cpu_core_count" {
     type = number
-  
+    
 }
 
 variable "cpu_threads_per_core" {
     type = number
-  
+    
 }
 variable "hibernation" {
     type = bool
@@ -64,21 +64,23 @@ variable "vpc_security_group_ids" {
 }
 variable "monitoring" {
     type = bool
+    
 }  
 variable "get_password_data" {
     type = bool
 }
 variable "host_id" {
     type = string
+    default     = null
 }
 
 variable "metadata_options" {
     type = map(string)
-  
+    default     = null
 }
 variable "network_interface" {
-    type = list(map(string))
-  
+    type = list(map(string)) 
+    default     = null
 }
 variable "name" {
     type = string
