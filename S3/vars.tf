@@ -41,6 +41,13 @@ variable "owner" {
 variable "website" {
     type = any
     default  = {}
-
+}
+variable "versioning" {
+    type = map(string)
+    default  = {}
   
+}
+variable "server_side_encryption_configuration" {
+    type = any
+    default  = {}  
 }
