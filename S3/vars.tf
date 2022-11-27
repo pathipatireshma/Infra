@@ -13,7 +13,15 @@ variable "object_lock_enabled" {
     type = bool
   
 }
-variable "tags " {
-    type = map(string)
-  
+variable "tags" {
+    type        = map(string)
+    default     = {}
+}
+variable "expected_bucket_owner" {
+    type = string
+    default = "null"
+}
+variable "status" {
+    type = string
+    default = "null"
 }
