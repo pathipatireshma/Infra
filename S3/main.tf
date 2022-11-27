@@ -12,3 +12,8 @@ resource "aws_s3_bucket_accelerate_configuration" "this" {
     status                  = var.status 
     
 }
+resource "aws_s3_bucket_acl" "this" {
+    bucket                  = var.bucket
+    expected_bucket_owner   = var.expected_bucket_owner
+  
+}
