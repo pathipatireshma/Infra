@@ -38,3 +38,9 @@ variable "owner" {
     type = map(string)
     default  = {}
 }
+variable "website" {
+    type = any
+    default  = {}
+
+  
+}
