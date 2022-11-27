@@ -25,3 +25,16 @@ variable "status" {
     type = string
     default = "null"
 }
+variable "acl" {
+    type = string
+    default = "null"  
+}
+variable "grant" {
+    type = any
+    default = []
+  
+}
+variable "owner" {
+    type = map(string)
+    default  = {}
+}
