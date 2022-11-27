@@ -120,3 +120,21 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
         }
     }
 }
+resource "aws_s3_bucket_object_lock_configuration" "this" {
+    bucket                  = var.bucket
+    expected_bucket_owner   = var.expected_bucket_owner
+    token                 = try(var.object_lock_configuration.token, null)
+
+    rule {
+        default_retention {
+            mode  = var.object_lock_configuration.rule.default_retention.mode
+            days  = try(var.object_lock_configuration.rule.default_retention.days, null)
+            years = try(var.object_lock_configuration.rule.default_retention.years, null)
+        }
+    }
+}
+resource "aws_s3_bucket_request_payment_configuration" "this" {
+    bucket                  = var.bucket
+    expected_bucket_owner   = var.expected_bucket_owner
+    payer = lower(var.request_payer) == "requester" ? "Requester" : "BucketOwner"
+}

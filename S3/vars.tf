@@ -51,3 +51,11 @@ variable "server_side_encryption_configuration" {
     type = any
     default  = {}  
 }
+variable "object_lock_configuration" {
+    type = any
+    default  = {}   
+}
+variable "request_payer" {
+    type = string
+    default = "null"
+}
