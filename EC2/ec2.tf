@@ -10,7 +10,6 @@ resource "aws_instance" "this" {
     key_name                    =    var.key_name
     disable_api_termination     =    var.disable_api_termination
     user_data                   =    var.user_data
-    user_data_base64            =    var.user_data_base64
     user_data_replace_on_change =    var.user_data_replace_on_change
     subnet_id                   =    var.subnet_id
     vpc_security_group_ids      =    var.vpc_security_group_ids
@@ -18,7 +17,8 @@ resource "aws_instance" "this" {
     get_password_data           =    var.get_password_data
     tags        = merge({ "Name" = var.name }, var.tags)
     dynamic "launch_template" {
-    for_each = var.launch_template != null ? [var.launch_template] : []
+    # for_each = length(var.launch_template != {} ? [var.launch_template] : {})
+    for_each = var.launch_template
     content {
       id      = lookup(var.launch_template, "id", null)
       name    = lookup(var.launch_template, "name", null)

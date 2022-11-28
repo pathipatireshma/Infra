@@ -5,15 +5,17 @@ variable "availability_zone" {
 
 variable "cpu_core_count" {
     type = number
-    
+    default = 1
 }
 
 variable "cpu_threads_per_core" {
     type = number
+    default = 1
     
 }
 variable "hibernation" {
     type = bool
+    default = false
 }
 
 variable "cpu_credits" {
@@ -22,8 +24,7 @@ variable "cpu_credits" {
 }
 variable "instance_type" {
     type = string
-    default = "null"
-  
+   
 }
 variable "key_name" {
     type = string
@@ -32,10 +33,12 @@ variable "key_name" {
 }
 variable "launch_template" {
     type = map(string)
+    default = {}
   
 }
 variable "disable_api_termination" {
     type        = bool
+    default = false
   
 }
 variable "ebs_block_device" {
@@ -46,13 +49,10 @@ variable "user_data" {
     type = string
     default = "null"
 }
-variable "user_data_base64" {
-    type = string
-    default = "null"
-}
+
 variable "user_data_replace_on_change" {
-    type = string
-    default = "null"
+    type = bool
+    default = false
 }
 variable "subnet_id" {
     type        = string
@@ -64,10 +64,12 @@ variable "vpc_security_group_ids" {
 }
 variable "monitoring" {
     type = bool
+    default = false
     
 }  
 variable "get_password_data" {
     type = bool
+    default = false
 }
 variable "host_id" {
     type = string
@@ -80,13 +82,14 @@ variable "metadata_options" {
 }
 variable "network_interface" {
     type = list(map(string)) 
-    default     = null
+    default     = []
 }
 variable "name" {
     type = string
+    default = []
   
 }
 variable "tags" {
     type = map(string)
-  
+    default = {}  
 }
