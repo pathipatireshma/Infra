@@ -59,3 +59,7 @@ variable "request_payer" {
     type = string
     default = "null"
 }
+variable "cors_rule" {
+    type = any
+    default = []
+}
