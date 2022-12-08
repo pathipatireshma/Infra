@@ -63,3 +63,7 @@ variable "cors_rule" {
     type = any
     default = []
 }
+variable "lifecycle_rule" {
+    type = any
+    default = []
+}
