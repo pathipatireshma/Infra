@@ -86,7 +86,7 @@ variable "network_interface" {
 }
 variable "name" {
     type = string
-    default = []
+    default = null
   
 }
 variable "tags" {
