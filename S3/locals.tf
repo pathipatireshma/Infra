@@ -4,4 +4,6 @@ locals {
   grants = try(jsondecode(var.grant), var.grant)
   cors_rules = try(jsondecode(var.cors_rule), var.cors_rule)
   lifecycle_rules = try(jsondecode(var.lifecycle_rule), var.lifecycle_rule)
+  metric_configuration = try(jsondecode(var.metric_configuration), var.metric_configuration)
+  intelligent_tiering  = try(jsondecode(var.intelligent_tiering), var.intelligent_tiering)
 }

@@ -119,3 +119,43 @@ variable "policy" {
     type = string
     default = "null"
 }
+variable "block_public_acls" {
+    type = bool
+    default = false
+}
+variable "block_public_policy" {
+    type = bool
+    default = false
+}
+variable "ignore_public_acls" {
+    type = bool
+    default = false
+}
+variable "restrict_public_buckets" {
+    type = bool
+    default = false
+}
+variable "object_ownership" {
+    type = string
+    default = "ObjectWrite"
+}
+variable "attach_public_policy" {
+    type = bool
+    default = true
+}
+variable "inventory_configuration" {
+    type = any
+    default = {}
+}
+variable "metric_configuration" {
+    type = any
+    default = []
+}
+variable "intelligent_tiering" {
+    type = any
+    default = {}
+}
+variable "control_object_ownership" {
+    type = bool
+    default = true
+}
