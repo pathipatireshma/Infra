@@ -1,4 +1,5 @@
 resource "aws_s3_bucket" "this" {
+    count = local.create_bucket ? 1 : 0
     bucket              = var.bucket
     bucket_prefix       = var.bucket_prefix
     force_destroy       = var.force_destroy
@@ -7,12 +8,14 @@ resource "aws_s3_bucket" "this" {
    
 }
 resource "aws_s3_bucket_accelerate_configuration" "this" {
+    count = local.create_bucket && var.acceleration_status != null ? 1 : 0
     bucket                  = var.bucket
     expected_bucket_owner   = var.expected_bucket_owner
     status                  = var.status 
     
 }
 resource "aws_s3_bucket_acl" "this" {
+    count = local.create_bucket && ((var.acl != null && var.acl != "null") || length(local.grants) > 0) ? 1 : 0
     bucket                  = var.bucket
     expected_bucket_owner   = var.expected_bucket_owner
     acl                     = var.acl
@@ -42,6 +45,7 @@ resource "aws_s3_bucket_acl" "this" {
 }
 
 resource "aws_s3_bucket_website_configuration" "this" {
+    count = local.create_bucket && length(keys(var.website)) > 0 ? 1 : 0
     bucket                  = var.bucket
     expected_bucket_owner   = var.expected_bucket_owner
     dynamic "index_document" {
@@ -92,6 +96,7 @@ resource "aws_s3_bucket_website_configuration" "this" {
 }
 
 resource "aws_s3_bucket_versioning" "this" {
+    count = local.create_bucket && length(keys(var.versioning)) > 0 ? 1 : 0
     bucket                  = var.bucket
     expected_bucket_owner   = var.expected_bucket_owner
     mfa                   = try(var.versioning["mfa"], null)
@@ -101,6 +106,7 @@ resource "aws_s3_bucket_versioning" "this" {
     }
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+    count = local.create_bucket && length(keys(var.server_side_encryption_configuration)) > 0 ? 1 : 0
     bucket                  = var.bucket
     expected_bucket_owner   = var.expected_bucket_owner
     dynamic "rule" {
@@ -121,6 +127,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
     }
 }
 resource "aws_s3_bucket_object_lock_configuration" "this" {
+    count = local.create_bucket && var.object_lock_enabled && try(var.object_lock_configuration.rule.default_retention, null) != null ? 1 : 0
     bucket                  = var.bucket
     expected_bucket_owner   = var.expected_bucket_owner
     token                 = try(var.object_lock_configuration.token, null)
@@ -134,11 +141,13 @@ resource "aws_s3_bucket_object_lock_configuration" "this" {
     }
 }
 resource "aws_s3_bucket_request_payment_configuration" "this" {
+    count = local.create_bucket && var.request_payer != null ? 1 : 0
     bucket                  = var.bucket
     expected_bucket_owner   = var.expected_bucket_owner
     payer = lower(var.request_payer) == "requester" ? "Requester" : "BucketOwner"
 }
 resource "aws_s3_bucket_cors_configuration" "this" {
+    count = local.create_bucket && length(local.cors_rules) > 0 ? 1 : 0
     bucket                  = var.bucket
     expected_bucket_owner   = var.expected_bucket_owner
     dynamic "cors_rule" {
@@ -154,6 +163,7 @@ resource "aws_s3_bucket_cors_configuration" "this" {
     }
 }
 resource "aws_s3_bucket_lifecycle_configuration" "this" {
+    count = local.create_bucket && length(local.lifecycle_rules) > 0 ? 1 : 0
     bucket                  = var.bucket
     expected_bucket_owner   = var.expected_bucket_owner
     dynamic "rule" {
@@ -243,6 +253,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
     depends_on = [aws_s3_bucket_versioning.this]
 }
 resource "aws_s3_bucket_replication_configuration" "this" {
+    count = local.create_bucket && length(keys(var.replication_configuration)) > 0 ? 1 : 0
     bucket = var.bucket
     role = var.replication_configuration["role"]
     dynamic "rule" {
@@ -364,4 +375,9 @@ resource "aws_s3_bucket_replication_configuration" "this" {
         }    
     }
     depends_on = [aws_s3_bucket_versioning.this]
+}
+resource "aws_s3_bucket_policy" "this" {
+    count = local.create_bucket && local.attach_policy ? 1 : 0
+    bucket = var.bucket
+    policy = data.aws_iam_policy_document.combined[0].json  
 }
