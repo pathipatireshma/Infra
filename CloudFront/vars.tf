@@ -1,27 +1,8 @@
-variable "name" {
-    type = string
-     
+variable "create_origin_access_identity " {
+    type = bool
+    default = false
 }
-variable "min_ttl" {
-    type = string
-      
-}
-variable "max_ttl" {
-    type = string
-    default = "null"
-  
-}
-variable "default_ttl" {
-    type = string
-    default = "null"
-  
-}
-variable "comment" {
-    type = string
-    default = "null"
-  
-}
-variable "parameters_in_cache_key and_forwarded_to_origin" {
+variable "origin_access_identities" {
     type = map(string)
-  
+    default = {}
 }

@@ -1,13 +1,7 @@
-resource "aws_cloudfront_cache_policy" "this" {
-    name = var.name
-    min_ttl = var.min_ttl
-    default_ttl = var.default_ttl
-    comment = var.comment
-    dymanic "parameters_in_cache_key_and_forwarded_to_origin" {
-        for_each = var.parameters_in_cache_key_and_forwarded_to_origin
-        content {
-            
-        }
-
+resource "aws_cloudfront_origin_access_identity" "this" {
+    for_each = local.create_origin_access_identity ? var.origin_access_identities : {}
+    comment = each.value
+    lifecycle {
+        create_before_destroy = true
     }
 }
