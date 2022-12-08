@@ -67,3 +67,7 @@ variable "lifecycle_rule" {
     type = any
     default = []
 }
+variable "replication_configuration" {
+    type = any
+    default = {}
+}
