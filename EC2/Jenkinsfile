@@ -1,0 +1,31 @@
+/* groovylint-disable-next-line CompileStatic */
+node {
+    // agent any
+    stage('checkout') {
+        checkout([$class: 'GitSCM', branches: [[name: '*/feature']],
+                extensions: [], userRemoteConfigs: [[credentialsId: '475123b5-b026-4cf1-872f-ceec0be083ad',
+                url: 'https://github.com/pathipatireshma/Infra.git']]])
+    }
+    stage('plan') {
+        withAWS(credentials: 'aws_credentials', region: 'us-east-1') {
+                    sh '''cd EC2/examples/
+                            terraform init
+                           terraform plan -var-file=infra.tfvars -out=planfile'''
+        }
+    }
+    stage('apply') {
+        /* groovylint-disable-next-line DuplicateMapLiteral, DuplicateStringLiteral */
+        withAWS(credentials: 'aws_credentials', region: 'us-east-1') {
+            /* groovylint-disable-next-line DuplicateStringLiteral, SpaceAfterClosingBrace */
+            if (terraformAction == 'apply') {
+                sh """cd EC2/examples/
+                        terraform ${terraformAction} planfile"""
+            }else if (terraformAction == 'destroy') {
+                sh """cd EC2/examples/
+                      terraform ${terraformAction} -var-file=infra.tfvars --auto-approve"""
+            } else {
+                echo 'Terraform_Action is required'
+            }
+        }
+    }
+}

@@ -5,7 +5,7 @@ resource "aws_instance" "this" {
     cpu_core_count              =   var.cpu_core_count
     cpu_threads_per_core        =   var.cpu_threads_per_core
     hibernation                 =    var.hibernation
-    host_id                     =    var.host_id 
+    host_id                     =    var.host_id
     instance_type               =    var.instance_type
     key_name                    =    var.key_name
     disable_api_termination     =    var.disable_api_termination
@@ -37,25 +37,25 @@ resource "aws_instance" "this" {
       volume_size           = lookup(ebs_block_device.value, "volume_size", null)
       volume_type           = lookup(ebs_block_device.value, "volume_type", null)
       throughput            = lookup(ebs_block_device.value, "throughput", null)
+      }
     }
-  }
-  dynamic "metadata_options" {
+    dynamic "metadata_options" {
     for_each = var.metadata_options != null ? [var.metadata_options] : []
     content {
-      http_endpoint               = lookup(metadata_options.value, "http_endpoint", "enabled")
-      http_tokens                 = lookup(metadata_options.value, "http_tokens", "optional")
-      http_put_response_hop_limit = lookup(metadata_options.value, "http_put_response_hop_limit", "1")
-      instance_metadata_tags      = lookup(metadata_options.value, "instance_metadata_tags", null)
+        http_endpoint               = lookup(metadata_options.value, "http_endpoint", "enabled")
+        http_tokens                 = lookup(metadata_options.value, "http_tokens", "optional")
+        http_put_response_hop_limit = lookup(metadata_options.value, "http_put_response_hop_limit", "1")
+        instance_metadata_tags      = lookup(metadata_options.value, "instance_metadata_tags", null)
+        }
     }
-  }
-  dynamic "network_interface" {
+    dynamic "network_interface" {
     for_each = var.network_interface
     content {
-      device_index          = network_interface.value.device_index
-      network_interface_id  = lookup(network_interface.value, "network_interface_id", null)
-      delete_on_termination = lookup(network_interface.value, "delete_on_termination", false)
+        device_index          = network_interface.value.device_index
+        network_interface_id  = lookup(network_interface.value, "network_interface_id", null)
+        delete_on_termination = lookup(network_interface.value, "delete_on_termination", false)
+        }
     }
-  }
     
 
 }
